@@ -14,30 +14,27 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.loot;
+package net.fabricmc.fabric.api.loot;
 
-import net.fabricmc.fabric.api.loot.FabricLootSupplier;
 import net.minecraft.world.loot.LootPool;
-import net.minecraft.world.loot.LootSupplier;
+import net.minecraft.world.loot.LootTableRange;
+import net.minecraft.world.loot.UniformLootTableRange;
+import net.minecraft.world.loot.condition.LootCondition;
+import net.minecraft.world.loot.entry.LootEntry;
 import net.minecraft.world.loot.function.LootFunction;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(LootSupplier.class)
-public interface MixinLootSupplier extends FabricLootSupplier {
-	@Accessor()
-	@Override
-	LootPool[] getPools();
-
-	@Accessor
-	@Override
-	void setPools(LootPool[] pools);
-
-	@Accessor
-	@Override
+public interface FabricLootPool {
+	default LootPool asPool() {
+		return (LootPool) this;
+	}
+	LootEntry[] getEntries();
+	void setEntries(LootEntry[] entries);
+	LootCondition[] getConditions();
+	void setConditions(LootCondition[] conditions);
 	LootFunction[] getFunctions();
-
-	@Accessor
-	@Override
-	void setFunctions(LootFunction[] functions);
+	void setFunctions(LootFunction[] entries);
+	LootTableRange getRolls();
+	void setRolls(LootTableRange rolls);
+	UniformLootTableRange getBonusRolls();
+	void setBonusRolls(UniformLootTableRange bonusRolls);
 }

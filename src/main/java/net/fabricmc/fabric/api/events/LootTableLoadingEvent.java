@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.impl.loot;
+package net.fabricmc.fabric.api.events;
 
-import net.minecraft.world.loot.LootPool;
+import net.fabricmc.fabric.api.loot.FabricLootSupplier;
+import net.fabricmc.fabric.util.HandlerArray;
+import net.fabricmc.fabric.util.HandlerRegistry;
+import net.minecraft.util.Identifier;
 
-public interface LootSupplierHooks {
-	void fabric_addPools(LootPool[] pools);
+import java.util.function.BiConsumer;
+
+@FunctionalInterface
+public interface LootTableLoadingEvent extends BiConsumer<Identifier, FabricLootSupplier> {
+	final HandlerRegistry<LootTableLoadingEvent> REGISTRY = new HandlerArray<>(LootTableLoadingEvent.class);
 }

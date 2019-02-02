@@ -14,30 +14,18 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.loot;
+package net.fabricmc.fabric.api.loot;
 
-import net.fabricmc.fabric.api.loot.FabricLootSupplier;
 import net.minecraft.world.loot.LootPool;
 import net.minecraft.world.loot.LootSupplier;
 import net.minecraft.world.loot.function.LootFunction;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(LootSupplier.class)
-public interface MixinLootSupplier extends FabricLootSupplier {
-	@Accessor()
-	@Override
+public interface FabricLootSupplier {
+	default LootSupplier asSupplier() {
+		return (LootSupplier) this;
+	}
 	LootPool[] getPools();
-
-	@Accessor
-	@Override
 	void setPools(LootPool[] pools);
-
-	@Accessor
-	@Override
 	LootFunction[] getFunctions();
-
-	@Accessor
-	@Override
 	void setFunctions(LootFunction[] functions);
 }
