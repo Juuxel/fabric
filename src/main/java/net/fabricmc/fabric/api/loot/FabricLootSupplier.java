@@ -21,7 +21,7 @@ import net.minecraft.world.loot.LootSupplier;
 import net.minecraft.world.loot.function.LootFunction;
 
 public interface FabricLootSupplier {
-	default LootSupplier asSupplier() {
+	default LootSupplier toVanilla() {
 		return (LootSupplier) this;
 	}
 	LootPool[] getPools();

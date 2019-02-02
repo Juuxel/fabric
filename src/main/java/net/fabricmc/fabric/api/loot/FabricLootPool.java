@@ -24,7 +24,7 @@ import net.minecraft.world.loot.entry.LootEntry;
 import net.minecraft.world.loot.function.LootFunction;
 
 public interface FabricLootPool {
-	default LootPool asPool() {
+	default LootPool toVanilla() {
 		return (LootPool) this;
 	}
 	LootEntry[] getEntries();
