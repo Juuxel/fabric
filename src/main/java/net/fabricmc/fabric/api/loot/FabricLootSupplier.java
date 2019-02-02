@@ -20,6 +20,10 @@ import net.minecraft.world.loot.LootPool;
 import net.minecraft.world.loot.LootSupplier;
 import net.minecraft.world.loot.function.LootFunction;
 
+/**
+ * An interface implemented by all {@code net.minecraft.world.loot.LootSupplier} instances when
+ * Fabric API is present. Contains accessors for various fields.
+ */
 public interface FabricLootSupplier {
 	default LootSupplier toVanilla() {
 		return (LootSupplier) this;

@@ -23,6 +23,10 @@ import net.minecraft.world.loot.condition.LootCondition;
 import net.minecraft.world.loot.entry.LootEntry;
 import net.minecraft.world.loot.function.LootFunction;
 
+/**
+ * An interface implemented by all {@code net.minecraft.world.loot.LootPool} instances when
+ * Fabric API is present. Contains accessors for various fields.
+ */
 public interface FabricLootPool {
 	default LootPool toVanilla() {
 		return (LootPool) this;

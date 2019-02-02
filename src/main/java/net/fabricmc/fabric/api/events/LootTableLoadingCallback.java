@@ -23,7 +23,11 @@ import net.minecraft.util.Identifier;
 
 import java.util.function.BiConsumer;
 
+/**
+ * An event handler that is called when loot tables are loaded.
+ * Use {@link #REGISTRY} to register instances.
+ */
 @FunctionalInterface
-public interface LootTableLoadingEvent extends BiConsumer<Identifier, FabricLootSupplier> {
-	final HandlerRegistry<LootTableLoadingEvent> REGISTRY = new HandlerArray<>(LootTableLoadingEvent.class);
+public interface LootTableLoadingCallback extends BiConsumer<Identifier, FabricLootSupplier> {
+	final HandlerRegistry<LootTableLoadingCallback> REGISTRY = new HandlerArray<>(LootTableLoadingCallback.class);
 }

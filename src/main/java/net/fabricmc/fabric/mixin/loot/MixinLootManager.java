@@ -16,7 +16,7 @@
 
 package net.fabricmc.fabric.mixin.loot;
 
-import net.fabricmc.fabric.api.events.LootTableLoadingEvent;
+import net.fabricmc.fabric.api.events.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.loot.FabricLootSupplier;
 import net.fabricmc.fabric.util.HandlerArray;
 import net.minecraft.item.Items;
@@ -45,7 +45,7 @@ public class MixinLootManager {
 	// TODO: Move this to a test mod
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void onInit(CallbackInfo ci) {
-		LootTableLoadingEvent.REGISTRY.register((id, supplier) -> {
+		LootTableLoadingCallback.REGISTRY.register((id, supplier) -> {
 			if ("minecraft:blocks/dirt".equals(id.toString())) {
 				LootPool[] pools = Arrays.copyOf(supplier.getPools(), supplier.getPools().length + 1);
 				pools[pools.length - 1] = LootPool.create()
@@ -60,12 +60,12 @@ public class MixinLootManager {
 	}
 
 	@Inject(method = "onResourceReload", at = @At("RETURN"))
-	private void injectAdders(ResourceManager manager, CallbackInfo info) {
+	private void onResourceReload(ResourceManager manager, CallbackInfo info) {
 		suppliers.forEach((id, supplier) -> {
-			LootTableLoadingEvent[] handlers = ((HandlerArray<LootTableLoadingEvent>) LootTableLoadingEvent.REGISTRY)
+			LootTableLoadingCallback[] handlers = ((HandlerArray<LootTableLoadingCallback>) LootTableLoadingCallback.REGISTRY)
 					.getBackingArray();
 
-			for (LootTableLoadingEvent handler : handlers) {
+			for (LootTableLoadingCallback handler : handlers) {
 				handler.accept(id, (FabricLootSupplier) supplier);
 			}
 		});
