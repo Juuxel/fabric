@@ -16,9 +16,9 @@
 
 package net.fabricmc.fabric.mixin.loot.table;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -48,17 +48,17 @@ public abstract class MixinLootPool implements FabricLootPool {
 
 	@Override
 	public List<LootPoolEntry> getEntries() {
-		return Arrays.asList(entries);
+		return ImmutableList.copyOf(entries);
 	}
 
 	@Override
 	public List<LootCondition> getConditions() {
-		return Arrays.asList(conditions);
+		return ImmutableList.copyOf(conditions);
 	}
 
 	@Override
 	public List<LootFunction> getFunctions() {
-		return Arrays.asList(functions);
+		return ImmutableList.copyOf(functions);
 	}
 
 	@Accessor

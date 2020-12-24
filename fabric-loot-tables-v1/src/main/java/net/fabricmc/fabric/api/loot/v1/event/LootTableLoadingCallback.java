@@ -45,5 +45,6 @@ public interface LootTableLoadingCallback {
 			}
 	);
 
+	// TODO: What should I do about FabricLootSupplierBuilder here?
 	void onLootTableLoading(ResourceManager resourceManager, LootManager manager, Identifier id, FabricLootSupplierBuilder supplier, LootTableSetter setter);
 }

@@ -25,6 +25,10 @@ import net.minecraft.loot.function.LootFunction;
 
 import net.fabricmc.fabric.mixin.loot.table.LootSupplierBuilderHooks;
 
+/**
+ * @deprecated Use {@link FabricLootTableBuilder} instead.
+ */
+@Deprecated
 public class FabricLootSupplierBuilder extends LootTable.Builder {
 	private final LootSupplierBuilderHooks extended = (LootSupplierBuilderHooks) this;
 

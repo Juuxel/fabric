@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.api.loot.v1;
 
+import java.util.Collection;
+
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTableRange;
@@ -24,14 +26,20 @@ import net.minecraft.loot.function.LootFunction;
 
 import net.fabricmc.fabric.mixin.loot.table.LootPoolBuilderHooks;
 
+/**
+ * An extended version of {@link LootPool.Builder}.
+ */
 public class FabricLootPoolBuilder extends LootPool.Builder {
 	private final LootPoolBuilderHooks extended = (LootPoolBuilderHooks) this;
 
-	private FabricLootPoolBuilder() { }
+	protected FabricLootPoolBuilder() {
+	}
 
 	private FabricLootPoolBuilder(LootPool pool) {
 		copyFrom(pool, true);
 	}
+
+	// Vanilla overrides
 
 	@Override
 	public FabricLootPoolBuilder rolls(LootTableRange range) {
@@ -57,18 +65,98 @@ public class FabricLootPoolBuilder extends LootPool.Builder {
 		return this;
 	}
 
+	// Custom methods
+
+	/**
+	 * @deprecated Replaced with {@link #with(LootPoolEntry)}.
+	 */
+	@Deprecated
 	public FabricLootPoolBuilder withEntry(LootPoolEntry entry) {
 		extended.getEntries().add(entry);
 		return this;
 	}
 
+	/**
+	 * @deprecated Replaced with {@link #conditionally(LootCondition)}.
+	 */
+	@Deprecated
 	public FabricLootPoolBuilder withCondition(LootCondition condition) {
 		extended.getConditions().add(condition);
 		return this;
 	}
 
+	/**
+	 * @deprecated Replaced with {@link #apply(LootFunction)}.
+	 */
+	@Deprecated
 	public FabricLootPoolBuilder withFunction(LootFunction function) {
 		extended.getFunctions().add(function);
+		return this;
+	}
+
+	/**
+	 * Adds an entry to this builder.
+	 *
+	 * @param entry the added loot entry
+	 * @return this builder
+	 */
+	public FabricLootPoolBuilder with(LootPoolEntry entry) {
+		extended.getEntries().add(entry);
+		return this;
+	}
+
+	/**
+	 * Adds entries to this builder.
+	 *
+	 * @param entries the added loot entries
+	 * @return this builder
+	 */
+	public FabricLootPoolBuilder with(Collection<? extends LootPoolEntry> entries) {
+		extended.getEntries().addAll(entries);
+		return this;
+	}
+
+	/**
+	 * Adds a condition to this builder.
+	 *
+	 * @param condition the added condition
+	 * @return this builder
+	 */
+	public FabricLootPoolBuilder conditionally(LootCondition condition) {
+		extended.getConditions().add(condition);
+		return this;
+	}
+
+	/**
+	 * Adds conditions to this builder.
+	 *
+	 * @param conditions the added conditions
+	 * @return this builder
+	 */
+	public FabricLootPoolBuilder conditionally(Collection<? extends LootCondition> conditions) {
+		extended.getConditions().addAll(conditions);
+		return this;
+	}
+
+	/**
+	 * Applies a function to this builder.
+	 *
+	 * @param function the applied loot function
+	 * @return this builder
+	 */
+	public FabricLootPoolBuilder apply(LootFunction function) {
+		extended.getFunctions().add(function);
+		return this;
+	}
+
+	/**
+	 * Applies loot functions to this builder.
+	 *
+	 * @param functions the applied loot functions
+	 * @return this builder
+	 */
+	public FabricLootPoolBuilder apply(Collection<? extends LootFunction> functions) {
+		extended.getFunctions().addAll(functions);
 		return this;
 	}
 
@@ -101,10 +189,21 @@ public class FabricLootPoolBuilder extends LootPool.Builder {
 		return this;
 	}
 
+	/**
+	 * Creates an empty loot pool builder.
+	 *
+	 * @return the created builder
+	 */
 	public static FabricLootPoolBuilder builder() {
 		return new FabricLootPoolBuilder();
 	}
 
+	/**
+	 * Creates a builder copy of a loot pool.
+	 *
+	 * @param pool the loot pool
+	 * @return the copied builder
+	 */
 	public static FabricLootPoolBuilder of(LootPool pool) {
 		return new FabricLootPoolBuilder(pool);
 	}

@@ -16,9 +16,9 @@
 
 package net.fabricmc.fabric.mixin.loot.table;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,6 +31,7 @@ import net.minecraft.loot.function.LootFunction;
 
 import net.fabricmc.fabric.api.loot.v1.FabricLootSupplier;
 
+// This mixin now implements both FabricLootTable and FabricLootSupplier.
 @Mixin(LootTable.class)
 public abstract class MixinLootSupplier implements FabricLootSupplier {
 	@Shadow
@@ -42,12 +43,12 @@ public abstract class MixinLootSupplier implements FabricLootSupplier {
 
 	@Override
 	public List<LootPool> getPools() {
-		return Arrays.asList(pools);
+		return ImmutableList.copyOf(pools);
 	}
 
 	@Override
 	public List<LootFunction> getFunctions() {
-		return Arrays.asList(functions);
+		return ImmutableList.copyOf(functions);
 	}
 
 	@Accessor
