@@ -35,7 +35,7 @@ public class FabricLootTableBuilder extends LootTable.Builder {
 	}
 
 	private FabricLootTableBuilder(LootTable lootTable) {
-		copyFrom(supplier, true);
+		copyFrom(lootTable, true);
 	}
 
 	@Override
