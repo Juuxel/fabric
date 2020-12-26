@@ -14,42 +14,22 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.loot.v1;
+package net.fabricmc.fabric.mixin.loot;
 
 import java.util.List;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
-import net.minecraft.loot.context.LootContextType;
 import net.minecraft.loot.function.LootFunction;
 
-/**
- * Accessor methods for loot table properties.
- * This interface is automatically implemented on all {@link LootTable} instances.
- */
-public interface FabricLootTable {
-	/**
-	 * Gets this loot table as its vanilla type.
-	 *
-	 * @return the vanilla loot table
-	 */
-	default LootTable asVanilla() {
-		return (LootTable) this;
-	}
-
-	/**
-	 * Gets an unmodifiable list of this table's loot pools.
-	 *
-	 * @return the loot pools
-	 */
+@Mixin(LootTable.Builder.class)
+public interface LootTableBuilderAccessor {
+	@Accessor
 	List<LootPool> getPools();
 
-	/**
-	 * Gets an unmodifiable list of this table's functions.
-	 *
-	 * @return the functions
-	 */
+	@Accessor
 	List<LootFunction> getFunctions();
-
-	LootContextType getType();
 }

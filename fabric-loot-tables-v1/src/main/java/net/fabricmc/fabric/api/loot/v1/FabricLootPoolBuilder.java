@@ -27,8 +27,7 @@ import net.minecraft.loot.function.LootFunction;
  */
 @Deprecated
 public class FabricLootPoolBuilder extends net.fabricmc.fabric.api.loot.v2.FabricLootPoolBuilder {
-	protected FabricLootPoolBuilder() {
-	}
+	private FabricLootPoolBuilder() { }
 
 	private FabricLootPoolBuilder(LootPool pool) {
 		copyFrom(pool, true);

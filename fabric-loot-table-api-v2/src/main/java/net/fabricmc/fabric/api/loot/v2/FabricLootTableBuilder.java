@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.loot.v1;
+package net.fabricmc.fabric.api.loot.v2;
 
 import java.util.Collection;
 
@@ -23,13 +23,13 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContextType;
 import net.minecraft.loot.function.LootFunction;
 
-import net.fabricmc.fabric.mixin.loot.table.LootSupplierBuilderHooks;
+import net.fabricmc.fabric.mixin.loot.LootTableBuilderAccessor;
 
 /**
  * An extended version of {@link LootTable.Builder}.
  */
 public class FabricLootTableBuilder extends LootTable.Builder {
-	private final LootSupplierBuilderHooks extended = (LootSupplierBuilderHooks) this;
+	private final LootTableBuilderAccessor access = (LootTableBuilderAccessor) this;
 
 	protected FabricLootTableBuilder() {
 	}
@@ -63,7 +63,7 @@ public class FabricLootTableBuilder extends LootTable.Builder {
 	 * @return this builder
 	 */
 	public FabricLootTableBuilder pool(LootPool pool) {
-		extended.getPools().add(pool);
+		access.getPools().add(pool);
 		return this;
 	}
 
@@ -74,7 +74,7 @@ public class FabricLootTableBuilder extends LootTable.Builder {
 	 * @return this builder
 	 */
 	public FabricLootTableBuilder apply(LootFunction function) {
-		extended.getFunctions().add(function);
+		access.getFunctions().add(function);
 		return this;
 	}
 
@@ -85,7 +85,7 @@ public class FabricLootTableBuilder extends LootTable.Builder {
 	 * @return this builder
 	 */
 	public FabricLootTableBuilder pools(Collection<? extends LootPool> pools) {
-		extended.getPools().addAll(pools);
+		access.getPools().addAll(pools);
 		return this;
 	}
 
@@ -96,7 +96,7 @@ public class FabricLootTableBuilder extends LootTable.Builder {
 	 * @return this builder
 	 */
 	public FabricLootTableBuilder apply(Collection<? extends LootFunction> functions) {
-		extended.getFunctions().addAll(functions);
+		access.getFunctions().addAll(functions);
 		return this;
 	}
 
@@ -113,19 +113,18 @@ public class FabricLootTableBuilder extends LootTable.Builder {
 
 	/**
 	 * Copies the pools and functions of the {@code table} to this builder.
-	 * If {@code copyType} is true, the {@link FabricLootTable#getType type} of the table is also copied.
+	 * If {@code copyType} is true, the {@linkplain LootTable#getType type} of the table is also copied.
 	 *
 	 * @param table    the source loot table
 	 * @param copyType whether the type should be copied
 	 * @return this builder
 	 */
 	public FabricLootTableBuilder copyFrom(LootTable table, boolean copyType) {
-		FabricLootTable extendedTable = (FabricLootTable) table;
-		extended.getPools().addAll(extendedTable.getPools());
-		extended.getFunctions().addAll(extendedTable.getFunctions());
+		access.getPools().addAll(FabricLootTables.getPools(table));
+		access.getFunctions().addAll(FabricLootTables.getFunctions(table));
 
 		if (copyType) {
-			type(extendedTable.getType());
+			type(table.getType());
 		}
 
 		return this;
