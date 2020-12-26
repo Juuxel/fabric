@@ -25,6 +25,7 @@ import net.minecraft.loot.entry.ItemEntry;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v2.FabricLootPoolBuilder;
+import net.fabricmc.fabric.api.loot.v2.FabricLootTableBuilder;
 import net.fabricmc.fabric.api.loot.v2.LootTableLoadingCallback;
 
 public class LootTest implements ModInitializer {
@@ -33,6 +34,7 @@ public class LootTest implements ModInitializer {
 		// Test loot table load event
 		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, tableBuilder, setter) -> {
 			if (Blocks.WHITE_WOOL.getLootTableId().equals(id)) {
+				// Add gold ingot to white wool drops
 				LootPool pool = FabricLootPoolBuilder.builder()
 						.rolls(ConstantLootTableRange.create(1))
 						.with(ItemEntry.builder(Items.GOLD_INGOT).build())
@@ -40,6 +42,13 @@ public class LootTest implements ModInitializer {
 						.build();
 
 				tableBuilder.pool(pool);
+			} else if (Blocks.BLACK_WOOL.getLootTableId().equals(id)) {
+				// Replace black wool drops with an iron ingot
+				FabricLootPoolBuilder pool = FabricLootPoolBuilder.builder()
+						.rolls(ConstantLootTableRange.create(1))
+						.with(ItemEntry.builder(Items.IRON_INGOT));
+
+				setter.set(FabricLootTableBuilder.builder().pool(pool).build());
 			}
 		});
 	}
