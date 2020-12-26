@@ -24,40 +24,30 @@ import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.entry.LootPoolEntry;
 import net.minecraft.loot.function.LootFunction;
 
+import net.fabricmc.fabric.api.loot.v2.FabricLootPools;
+
 /**
- * Accessor methods for loot pool properties.
- * This interface is automatically implemented on all {@link LootPool} instances.
+ * An interface implemented by all {@code net.minecraft.loot.LootPool} instances when
+ * Fabric API is present. Contains accessors for various fields.
+ *
+ * @deprecated Replaced with {@link net.fabricmc.fabric.api.loot.v2.FabricLootPools}.
  */
+@Deprecated
 public interface FabricLootPool {
-	/**
-	 * Gets this loot pool as its vanilla type.
-	 *
-	 * @return the vanilla loot pool
-	 */
 	default LootPool asVanilla() {
 		return (LootPool) this;
 	}
 
-	/**
-	 * Gets an unmodifiable list of this pool's entries.
-	 *
-	 * @return the entries
-	 */
-	List<LootPoolEntry> getEntries();
-
-	/**
-	 * Gets an unmodifiable list of this pool's conditions.
-	 *
-	 * @return the conditions
-	 */
-	List<LootCondition> getConditions();
-
-	/**
-	 * Gets an unmodifiable list of this pool's functions.
-	 *
-	 * @return the functions
-	 */
-	List<LootFunction> getFunctions();
-
-	LootTableRange getRolls();
+	default List<LootPoolEntry> getEntries() {
+		return FabricLootPools.getEntries(asVanilla());
+	}
+	default List<LootCondition> getConditions() {
+		return FabricLootPools.getConditions(asVanilla());
+	}
+	default List<LootFunction> getFunctions() {
+		return FabricLootPools.getFunctions(asVanilla());
+	}
+	default LootTableRange getRolls() {
+		return FabricLootPools.getRolls(asVanilla());
+	}
 }

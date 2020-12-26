@@ -23,19 +23,27 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContextType;
 import net.minecraft.loot.function.LootFunction;
 
+import net.fabricmc.fabric.api.loot.v2.FabricLootTables;
+
 /**
  * An interface implemented by all {@link LootTable} instances when
  * Fabric API is present. Contains accessors for various fields.
  *
- * @deprecated Replaced with {@link FabricLootTable}.
+ * @deprecated Replaced with {@link net.fabricmc.fabric.api.loot.v2.FabricLootTables}.
  */
 @Deprecated
-public interface FabricLootSupplier extends FabricLootTable {
+public interface FabricLootSupplier {
 	default LootTable asVanilla() {
 		return (LootTable) this;
 	}
 
-	List<LootPool> getPools();
-	List<LootFunction> getFunctions();
-	LootContextType getType();
+	default List<LootPool> getPools() {
+		return FabricLootTables.getPools(asVanilla());
+	}
+	default List<LootFunction> getFunctions() {
+		return FabricLootTables.getFunctions(asVanilla());
+	}
+	default LootContextType getType() {
+		return asVanilla().getType();
+	}
 }

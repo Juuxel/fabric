@@ -40,7 +40,7 @@ import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.LootEntryTypeRegistry;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 
-public class LootTest implements ModInitializer {
+public class LootV1Test implements ModInitializer {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	private static final Gson LOOT_GSON = LootGsons.getTableGsonBuilder().create();

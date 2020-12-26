@@ -14,14 +14,28 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.loot.table;
+package net.fabricmc.fabric.mixin.loot;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.loot.LootTable;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTableRange;
+import net.minecraft.loot.condition.LootCondition;
+import net.minecraft.loot.entry.LootPoolEntry;
+import net.minecraft.loot.function.LootFunction;
 
-import net.fabricmc.fabric.api.loot.v1.FabricLootSupplier;
+@Mixin(LootPool.class)
+public interface LootPoolAccessor {
+	@Accessor
+	LootTableRange getRolls();
 
-@Mixin(LootTable.class)
-public abstract class MixinLootSupplier implements FabricLootSupplier {
+	@Accessor
+	LootPoolEntry[] getEntries();
+
+	@Accessor
+	LootCondition[] getConditions();
+
+	@Accessor
+	LootFunction[] getFunctions();
 }

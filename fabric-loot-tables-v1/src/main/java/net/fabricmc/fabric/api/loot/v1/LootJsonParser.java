@@ -24,7 +24,7 @@ import net.minecraft.loot.LootGsons;
 import net.minecraft.util.JsonHelper;
 
 /**
- * @deprecated Use {@link LootGsons#getTableGsonBuilder()} instead.
+ * @deprecated Use {@link LootGsons#getTableGsonBuilder()} from vanilla instead.
  */
 @Deprecated
 public final class LootJsonParser {
