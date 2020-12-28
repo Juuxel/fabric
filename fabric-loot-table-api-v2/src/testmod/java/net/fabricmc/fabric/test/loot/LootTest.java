@@ -17,9 +17,10 @@
 package net.fabricmc.fabric.test.loot;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Items;
-import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.LootPool;
+import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.condition.SurvivesExplosionLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 
@@ -36,7 +37,6 @@ public class LootTest implements ModInitializer {
 			if (Blocks.WHITE_WOOL.getLootTableId().equals(id)) {
 				// Add gold ingot to white wool drops
 				LootPool pool = FabricLootPoolBuilder.create()
-						.rolls(ConstantLootTableRange.create(1))
 						.with(ItemEntry.builder(Items.GOLD_INGOT).build())
 						.conditionally(SurvivesExplosionLootCondition.builder().build())
 						.build();
@@ -45,10 +45,17 @@ public class LootTest implements ModInitializer {
 			} else if (Blocks.BLACK_WOOL.getLootTableId().equals(id)) {
 				// Replace black wool drops with an iron ingot
 				FabricLootPoolBuilder pool = FabricLootPoolBuilder.create()
-						.rolls(ConstantLootTableRange.create(1))
 						.with(ItemEntry.builder(Items.IRON_INGOT));
 
 				setter.set(FabricLootTableBuilder.create().pool(pool).build());
+			} else if (EntityType.PIG.getLootTableId().equals(id)) {
+				// Add diamonds with bonus rolls to the pig loot table (bonus rolls don't work for blocks)
+				LootPool pool = FabricLootPoolBuilder.create()
+						.bonusRolls(new UniformLootTableRange(5f))
+						.with(ItemEntry.builder(Items.DIAMOND))
+						.build();
+
+				tableBuilder.pool(pool);
 			}
 		});
 	}

@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTableRange;
+import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.entry.LootPoolEntry;
 import net.minecraft.loot.function.LootFunction;
@@ -66,6 +67,18 @@ public class FabricLootPoolBuilder extends LootPool.Builder {
 	}
 
 	// Custom methods
+
+	/**
+	 * Sets the bonus rolls of this builder.
+	 *
+	 * @param bonusRolls the bonus rolls range
+	 * @return this builder
+	 * @see FabricLootPools#getBonusRolls(LootPool)
+	 */
+	public FabricLootPoolBuilder bonusRolls(UniformLootTableRange bonusRolls) {
+		access.setBonusRollsRange(bonusRolls);
+		return this;
+	}
 
 	/**
 	 * Adds an entry to this builder.
