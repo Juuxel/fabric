@@ -159,7 +159,7 @@ public class FabricLootPoolBuilder extends LootPool.Builder {
 	/**
 	 * Copies the entries, conditions and functions of the pool to this builder.
 	 *
-	 * <p>If {@code copyRolls} is true, the rolls of the pool are also copied.
+	 * <p>If {@code copyRolls} is true, the rolls and bonus rolls of the pool are also copied.
 	 */
 	public FabricLootPoolBuilder copyFrom(LootPool pool, boolean copyRolls) {
 		access.getConditions().addAll(FabricLootPools.getConditions(pool));
