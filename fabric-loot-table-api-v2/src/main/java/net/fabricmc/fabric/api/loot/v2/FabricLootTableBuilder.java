@@ -34,10 +34,6 @@ public class FabricLootTableBuilder extends LootTable.Builder {
 	protected FabricLootTableBuilder() {
 	}
 
-	private FabricLootTableBuilder(LootTable lootTable) {
-		copyFrom(lootTable, true);
-	}
-
 	@Override
 	public FabricLootTableBuilder pool(LootPool.Builder pool) {
 		super.pool(pool);
@@ -101,36 +97,6 @@ public class FabricLootTableBuilder extends LootTable.Builder {
 	}
 
 	/**
-	 * Copies the pools and functions of the {@code table} to this builder.
-	 * This is equal to {@code copyFrom(table, false)}.
-	 *
-	 * @param table the source loot table
-	 * @return this builder
-	 */
-	public FabricLootTableBuilder copyFrom(LootTable table) {
-		return copyFrom(table, false);
-	}
-
-	/**
-	 * Copies the pools and functions of the {@code table} to this builder.
-	 * If {@code copyType} is true, the {@linkplain LootTable#getType type} of the table is also copied.
-	 *
-	 * @param table    the source loot table
-	 * @param copyType whether the type should be copied
-	 * @return this builder
-	 */
-	public FabricLootTableBuilder copyFrom(LootTable table, boolean copyType) {
-		access.getPools().addAll(FabricLootTables.getPools(table));
-		access.getFunctions().addAll(FabricLootTables.getFunctions(table));
-
-		if (copyType) {
-			type(table.getType());
-		}
-
-		return this;
-	}
-
-	/**
 	 * Creates an empty builder.
 	 *
 	 * @return the created builder
@@ -146,6 +112,12 @@ public class FabricLootTableBuilder extends LootTable.Builder {
 	 * @return the copied builder
 	 */
 	public static FabricLootTableBuilder copyOf(LootTable table) {
-		return new FabricLootTableBuilder(table);
+		FabricLootTableBuilder builder = new FabricLootTableBuilder();
+
+		builder.type(table.getType());
+		builder.pools(FabricLootTables.getPools(table));
+		builder.apply(FabricLootTables.getFunctions(table));
+
+		return builder;
 	}
 }

@@ -36,10 +36,6 @@ public class FabricLootPoolBuilder extends LootPool.Builder {
 	protected FabricLootPoolBuilder() {
 	}
 
-	private FabricLootPoolBuilder(LootPool pool) {
-		copyFrom(pool, true);
-	}
-
 	// Vanilla overrides
 
 	@Override
@@ -147,34 +143,6 @@ public class FabricLootPoolBuilder extends LootPool.Builder {
 	}
 
 	/**
-	 * Copies the entries, conditions and functions of the {@code pool} to this
-	 * builder.
-	 *
-	 * <p>This is equal to {@code copyFrom(pool, false)}.
-	 */
-	public FabricLootPoolBuilder copyFrom(LootPool pool) {
-		return copyFrom(pool, false);
-	}
-
-	/**
-	 * Copies the entries, conditions and functions of the pool to this builder.
-	 *
-	 * <p>If {@code copyRolls} is true, the rolls and bonus rolls of the pool are also copied.
-	 */
-	public FabricLootPoolBuilder copyFrom(LootPool pool, boolean copyRolls) {
-		access.getConditions().addAll(FabricLootPools.getConditions(pool));
-		access.getFunctions().addAll(FabricLootPools.getFunctions(pool));
-		access.getEntries().addAll(FabricLootPools.getEntries(pool));
-
-		if (copyRolls) {
-			rolls(FabricLootPools.getRolls(pool));
-			bonusRolls(FabricLootPools.getBonusRolls(pool));
-		}
-
-		return this;
-	}
-
-	/**
 	 * Creates an empty loot pool builder.
 	 *
 	 * @return the created builder
@@ -190,6 +158,14 @@ public class FabricLootPoolBuilder extends LootPool.Builder {
 	 * @return the copied builder
 	 */
 	public static FabricLootPoolBuilder copyOf(LootPool pool) {
-		return new FabricLootPoolBuilder(pool);
+		FabricLootPoolBuilder builder = new FabricLootPoolBuilder();
+
+		builder.rolls(FabricLootPools.getRolls(pool));
+		builder.bonusRolls(FabricLootPools.getBonusRolls(pool));
+		builder.with(FabricLootPools.getEntries(pool));
+		builder.conditionally(FabricLootPools.getConditions(pool));
+		builder.apply(FabricLootPools.getFunctions(pool));
+
+		return builder;
 	}
 }

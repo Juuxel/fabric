@@ -25,7 +25,12 @@ import net.minecraft.loot.function.LootFunction;
 
 import net.fabricmc.fabric.api.loot.v1.FabricLootSupplierBuilder;
 import net.fabricmc.fabric.api.loot.v2.FabricLootTableBuilder;
+import net.fabricmc.fabric.api.loot.v2.FabricLootTables;
 
+/**
+ * A {@link FabricLootSupplierBuilder} that delegates all methods to a v2 {@link FabricLootTableBuilder}.
+ * Used for hooking the two {@code LootTableLoadingCallback} interfaces together.
+ */
 public class DelegatingLootTableBuilder extends FabricLootSupplierBuilder {
 	private final FabricLootTableBuilder parent;
 
@@ -76,14 +81,14 @@ public class DelegatingLootTableBuilder extends FabricLootSupplierBuilder {
 	}
 
 	@Override
-	public FabricLootSupplierBuilder copyFrom(LootTable supplier) {
-		parent.copyFrom(supplier);
-		return this;
-	}
-
-	@Override
 	public FabricLootSupplierBuilder copyFrom(LootTable supplier, boolean copyType) {
-		parent.copyFrom(supplier, copyType);
+		parent.pools(FabricLootTables.getPools(supplier));
+		parent.apply(FabricLootTables.getFunctions(supplier));
+
+		if (copyType) {
+			parent.type(supplier.getType());
+		}
+
 		return this;
 	}
 

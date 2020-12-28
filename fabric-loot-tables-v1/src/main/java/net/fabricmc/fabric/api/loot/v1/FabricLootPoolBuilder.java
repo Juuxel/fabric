@@ -22,6 +22,8 @@ import net.minecraft.loot.LootTableRange;
 import net.minecraft.loot.entry.LootPoolEntry;
 import net.minecraft.loot.function.LootFunction;
 
+import net.fabricmc.fabric.api.loot.v2.FabricLootPools;
+
 /**
  * @deprecated Replaced with {@link net.fabricmc.fabric.api.loot.v2.FabricLootPoolBuilder}.
  */
@@ -89,7 +91,14 @@ public class FabricLootPoolBuilder extends net.fabricmc.fabric.api.loot.v2.Fabri
 	 * <p>If {@code copyRolls} is true, the {@link FabricLootPool#getRolls rolls} of the pool are also copied.
 	 */
 	public FabricLootPoolBuilder copyFrom(LootPool pool, boolean copyRolls) {
-		super.copyFrom(pool, copyRolls);
+		with(FabricLootPools.getEntries(pool));
+		conditionally(FabricLootPools.getConditions(pool));
+		apply(FabricLootPools.getFunctions(pool));
+
+		if (copyRolls) {
+			rolls(FabricLootPools.getRolls(pool));
+		}
+
 		return this;
 	}
 
