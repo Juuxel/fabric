@@ -168,6 +168,7 @@ public class FabricLootPoolBuilder extends LootPool.Builder {
 
 		if (copyRolls) {
 			rolls(FabricLootPools.getRolls(pool));
+			bonusRolls(FabricLootPools.getBonusRolls(pool));
 		}
 
 		return this;
