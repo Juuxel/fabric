@@ -23,6 +23,7 @@ import com.google.gson.JsonSerializationContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.LootGsons;
@@ -53,7 +54,7 @@ public class LootV1Test implements ModInitializer {
 
 		// Test loot table load event
 		LootTableLoadingCallback.EVENT.register((resourceManager, manager, id, supplier, setter) -> {
-			if ("minecraft:blocks/dirt".equals(id.toString())) {
+			if (Blocks.DIRT.getLootTableId().equals(id)) {
 				LootPoolEntry entryFromString = LOOT_GSON.fromJson(LOOT_ENTRY_JSON, LootPoolEntry.class);
 
 				LootPool pool = FabricLootPoolBuilder.builder()
