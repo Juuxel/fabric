@@ -165,7 +165,7 @@ public class FabricLootPoolBuilder extends LootPool.Builder {
 	 *
 	 * @return the created builder
 	 */
-	public static FabricLootPoolBuilder builder() {
+	public static FabricLootPoolBuilder create() {
 		return new FabricLootPoolBuilder();
 	}
 

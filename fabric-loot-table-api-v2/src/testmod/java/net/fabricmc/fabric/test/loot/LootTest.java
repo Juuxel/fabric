@@ -35,7 +35,7 @@ public class LootTest implements ModInitializer {
 		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, tableBuilder, setter) -> {
 			if (Blocks.WHITE_WOOL.getLootTableId().equals(id)) {
 				// Add gold ingot to white wool drops
-				LootPool pool = FabricLootPoolBuilder.builder()
+				LootPool pool = FabricLootPoolBuilder.create()
 						.rolls(ConstantLootTableRange.create(1))
 						.with(ItemEntry.builder(Items.GOLD_INGOT).build())
 						.conditionally(SurvivesExplosionLootCondition.builder().build())
@@ -44,11 +44,11 @@ public class LootTest implements ModInitializer {
 				tableBuilder.pool(pool);
 			} else if (Blocks.BLACK_WOOL.getLootTableId().equals(id)) {
 				// Replace black wool drops with an iron ingot
-				FabricLootPoolBuilder pool = FabricLootPoolBuilder.builder()
+				FabricLootPoolBuilder pool = FabricLootPoolBuilder.create()
 						.rolls(ConstantLootTableRange.create(1))
 						.with(ItemEntry.builder(Items.IRON_INGOT));
 
-				setter.set(FabricLootTableBuilder.builder().pool(pool).build());
+				setter.set(FabricLootTableBuilder.create().pool(pool).build());
 			}
 		});
 	}

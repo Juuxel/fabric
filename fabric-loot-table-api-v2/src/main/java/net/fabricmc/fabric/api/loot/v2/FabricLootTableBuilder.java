@@ -135,7 +135,7 @@ public class FabricLootTableBuilder extends LootTable.Builder {
 	 *
 	 * @return the created builder
 	 */
-	public static FabricLootTableBuilder builder() {
+	public static FabricLootTableBuilder create() {
 		return new FabricLootTableBuilder();
 	}
 
