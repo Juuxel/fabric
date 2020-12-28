@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTableRange;
+import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.entry.LootPoolEntry;
 import net.minecraft.loot.function.LootFunction;
@@ -29,6 +30,9 @@ import net.minecraft.loot.function.LootFunction;
 public interface LootPoolAccessor {
 	@Accessor
 	LootTableRange getRolls();
+
+	@Accessor
+	UniformLootTableRange getBonusRolls();
 
 	@Accessor
 	LootPoolEntry[] getEntries();

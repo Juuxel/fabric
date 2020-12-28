@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTableRange;
+import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.entry.LootPoolEntry;
 import net.minecraft.loot.function.LootFunction;
@@ -44,6 +45,18 @@ public final class FabricLootPools {
 	public static LootTableRange getRolls(LootPool pool) {
 		Objects.requireNonNull(pool, "pool cannot be null");
 		return ((LootPoolAccessor) pool).getRolls();
+	}
+
+	/**
+	 * Gets the bonus rolls of a loot pool, specifying the number of additional {@linkplain #getRolls(LootPool) rolls}
+	 * per point of {@linkplain net.minecraft.loot.context.LootContext#getLuck() luck}.
+	 *
+	 * @return the bonus rolls of a pool
+	 * @see #getRolls(LootPool)
+	 */
+	public static UniformLootTableRange getBonusRolls(LootPool pool) {
+		Objects.requireNonNull(pool, "pool cannot be null");
+		return ((LootPoolAccessor) pool).getBonusRolls();
 	}
 
 	/**
