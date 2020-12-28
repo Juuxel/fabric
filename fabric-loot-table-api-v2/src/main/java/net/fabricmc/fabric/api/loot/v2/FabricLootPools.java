@@ -36,21 +36,41 @@ public final class FabricLootPools {
 	private FabricLootPools() {
 	}
 
+	/**
+	 * Gets the rolls of a loot pool, specifying how many entries from the pool should be selected.
+	 *
+	 * @return the rolls of a pool
+	 */
 	public static LootTableRange getRolls(LootPool pool) {
 		Objects.requireNonNull(pool, "pool cannot be null");
 		return ((LootPoolAccessor) pool).getRolls();
 	}
 
+	/**
+	 * Gets an immutable list of a loot pool's entries.
+	 *
+	 * @return the entries of the pool
+	 */
 	public static List<LootPoolEntry> getEntries(LootPool pool) {
 		Objects.requireNonNull(pool, "pool cannot be null");
 		return ImmutableList.copyOf(((LootPoolAccessor) pool).getEntries());
 	}
 
+	/**
+	 * Gets an immutable list of a loot pool's loot conditions.
+	 *
+	 * @return the conditions of the pool
+	 */
 	public static List<LootCondition> getConditions(LootPool pool) {
 		Objects.requireNonNull(pool, "pool cannot be null");
 		return ImmutableList.copyOf(((LootPoolAccessor) pool).getConditions());
 	}
 
+	/**
+	 * Gets an immutable list of the loot functions applied to a loot pool.
+	 *
+	 * @return the functions applied to the pool
+	 */
 	public static List<LootFunction> getFunctions(LootPool pool) {
 		Objects.requireNonNull(pool, "pool cannot be null");
 		return ImmutableList.copyOf(((LootPoolAccessor) pool).getFunctions());
