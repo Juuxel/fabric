@@ -29,7 +29,7 @@ import net.fabricmc.fabric.api.loot.v2.FabricLootTables;
  * An interface implemented by all {@link LootTable} instances when
  * Fabric API is present. Contains accessors for various fields.
  *
- * @deprecated Replaced with {@link net.fabricmc.fabric.api.loot.v2.FabricLootTables}.
+ * @deprecated Replaced with {@link FabricLootTables}.
  */
 @Deprecated
 public interface FabricLootSupplier {
@@ -44,6 +44,6 @@ public interface FabricLootSupplier {
 		return FabricLootTables.getFunctions(asVanilla());
 	}
 	default LootContextType getType() {
-		return asVanilla().getType();
+		return asVanilla().getType(); // Vanilla has this now
 	}
 }

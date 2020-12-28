@@ -30,7 +30,7 @@ import net.fabricmc.fabric.api.loot.v2.FabricLootPools;
  * An interface implemented by all {@code net.minecraft.loot.LootPool} instances when
  * Fabric API is present. Contains accessors for various fields.
  *
- * @deprecated Replaced with {@link net.fabricmc.fabric.api.loot.v2.FabricLootPools}.
+ * @deprecated Replaced with {@link FabricLootPools}.
  */
 @Deprecated
 public interface FabricLootPool {
