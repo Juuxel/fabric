@@ -21,8 +21,6 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
-import org.apache.logging.log4j.Logger;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,10 +38,6 @@ import net.fabricmc.fabric.api.loot.v2.LootTableLoadingCallback;
 
 @Mixin(LootManager.class)
 abstract class LootManagerMixin {
-	@Shadow
-	@Final
-	private static Logger LOGGER;
-
 	@Shadow
 	private Map<Identifier, LootTable> tables;
 
