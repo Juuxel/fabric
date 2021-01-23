@@ -29,6 +29,7 @@ import net.fabricmc.fabric.mixin.loot.LootTableBuilderAccessor;
  * An extended version of {@link LootTable.Builder}.
  */
 public class FabricLootTableBuilder extends LootTable.Builder {
+	// Any new LootPool.Builder methods have to be added to this class and copyOf().
 	private final LootTableBuilderAccessor access = (LootTableBuilderAccessor) this;
 
 	protected FabricLootTableBuilder() {
