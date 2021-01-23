@@ -58,5 +58,12 @@ public class LootTest implements ModInitializer {
 				tableBuilder.pool(pool);
 			}
 		});
+
+		// Test that the event is stopped when the loot table is replaced
+		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, tableBuilder, setter) -> {
+			if (Blocks.BLACK_WOOL.getLootTableId().equals(id)) {
+				throw new AssertionError("Event should have been stopped from replaced loot table");
+			}
+		});
 	}
 }

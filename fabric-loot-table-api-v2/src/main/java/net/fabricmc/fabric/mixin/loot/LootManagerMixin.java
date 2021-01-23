@@ -57,9 +57,7 @@ abstract class LootManagerMixin {
 			//noinspection ConstantConditions
 			LootTableLoadingCallback.EVENT.invoker().onLootTableLoading(
 					resourceManager, (LootManager) (Object) this, id, builder, replacement -> {
-						if (newTables.put(id, replacement) != null) {
-							LOGGER.warn("[fabric-loot-table-api-v2] The loot table {} was replaced multiple times", id);
-						}
+						newTables.put(id, replacement);
 					}
 			);
 

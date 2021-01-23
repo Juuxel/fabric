@@ -33,8 +33,16 @@ public interface LootTableLoadingCallback {
 	Event<LootTableLoadingCallback> EVENT = EventFactory.createArrayBacked(
 			LootTableLoadingCallback.class,
 			(listeners) -> (resourceManager, lootManager, id, tableBuilder, setter) -> {
+				LootTable[] replacement = new LootTable[1];
+				LootTableSetter internalSetter = table -> replacement[0] = table;
+
 				for (LootTableLoadingCallback callback : listeners) {
-					callback.onLootTableLoading(resourceManager, lootManager, id, tableBuilder, setter);
+					callback.onLootTableLoading(resourceManager, lootManager, id, tableBuilder, internalSetter);
+
+					if (replacement[0] != null) {
+						setter.set(replacement[0]);
+						break;
+					}
 				}
 			}
 	);
@@ -57,6 +65,8 @@ public interface LootTableLoadingCallback {
 	interface LootTableSetter {
 		/**
 		 * Sets the loaded loot table value to the table.
+		 *
+		 * <p>Calling this method cancels the remaining callbacks of the event.
 		 *
 		 * @param table the replacement table
 		 */
