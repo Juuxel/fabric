@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@v1
       - run: ./gradlew check build publishToMavenLocal --stacktrace --parallel --warning-mode=fail
-      - uses: Juuxel/publish-checkstyle-report@v0.1.0
+      - uses: Juuxel/publish-checkstyle-report@v0.1.1
         if: ${{ success() || failure() }}
         with:
           reports: |
