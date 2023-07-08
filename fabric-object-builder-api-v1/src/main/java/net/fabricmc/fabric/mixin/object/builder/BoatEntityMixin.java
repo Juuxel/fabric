@@ -53,6 +53,9 @@ abstract class BoatEntityMixin extends Entity implements FabricBoatEntity {
 	private static final Logger LOGGER = LoggerFactory.getLogger("fabric-object-builder-api-v1");
 
 	// Hardcode the max tracked data id to avoid conflicts with other mods.
+	// TODO: This is very hacky. There's a possible alternative design:
+	//   - custom Fabric(Chest)BoatEntity impl class
+	//   - enable the Fabric boat entity type with an API call, similar to colored fluid names
 	@Unique
 	private static final TrackedData<OptionalInt> FABRIC_BOAT_TYPE = TrackedDataHandlerRegistry.OPTIONAL_INT.create(254);
 
