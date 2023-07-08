@@ -1,4 +1,22 @@
+/*
+ * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.fabricmc.fabric.mixin.object.builder;
+
+import java.util.OptionalInt;
 
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -9,9 +27,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -31,8 +52,9 @@ abstract class BoatEntityMixin extends Entity implements FabricBoatEntity {
 	@Unique
 	private static final Logger LOGGER = LoggerFactory.getLogger("fabric-object-builder-api-v1");
 
+	// Hardcode the max tracked data id to avoid conflicts with other mods.
 	@Unique
-	protected @Nullable RegistryEntry<FabricBoatType> fabricBoatType;
+	private static final TrackedData<OptionalInt> FABRIC_BOAT_TYPE = TrackedDataHandlerRegistry.OPTIONAL_INT.create(254);
 
 	BoatEntityMixin() {
 		super(null, null);
@@ -40,39 +62,69 @@ abstract class BoatEntityMixin extends Entity implements FabricBoatEntity {
 
 	@Override
 	public @Nullable RegistryEntry<FabricBoatType> getFabricBoatType() {
-		return fabricBoatType;
+		OptionalInt rawId = dataTracker.get(FABRIC_BOAT_TYPE);
+		if (rawId.isEmpty()) return null;
+
+		return getWorld()
+				.getRegistryManager()
+				.get(FabricBoatType.REGISTRY_KEY)
+				.getEntry(rawId.getAsInt())
+				.orElse(null);
 	}
 
 	@Override
 	public void setFabricBoatType(@Nullable RegistryEntry<FabricBoatType> boatType) {
-		fabricBoatType = boatType;
+		OptionalInt rawId = OptionalInt.empty();
+
+		if (boatType != null) {
+			Registry<FabricBoatType> registry = getWorld()
+					.getRegistryManager()
+					.get(FabricBoatType.REGISTRY_KEY);
+
+			if (boatType.ownerEquals(registry.getEntryOwner())) {
+				// Fetch the raw ID
+				int id = registry.getRawId(boatType.value());
+				rawId = OptionalInt.of(id);
+			} else {
+				LOGGER.error("Fabric boat type {} is not from the boat type registry", boatType);
+			}
+		}
+
+		dataTracker.set(FABRIC_BOAT_TYPE, rawId);
 	}
 
 	@Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
-	private void writeFabricTypeToNbt(NbtCompound nbt) {
-		if (fabricBoatType != null) {
-			nbt.putString("FabricType", fabricBoatType.getKey().orElseThrow().getValue().toString());
+	private void writeFabricTypeToNbt(NbtCompound nbt, CallbackInfo info) {
+		RegistryEntry<FabricBoatType> boatType = getFabricBoatType();
+
+		if (boatType != null) {
+			nbt.putString("FabricType", boatType.getKey().orElseThrow().getValue().toString());
 		}
 	}
 
 	@Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
-	private void readFabricTypeFromNbt(NbtCompound nbt) {
+	private void readFabricTypeFromNbt(NbtCompound nbt, CallbackInfo info) {
 		if (nbt.contains("FabricType", NbtElement.STRING_TYPE)) {
 			try {
 				var id = new Identifier(nbt.getString("FabricType"));
 				RegistryKey<FabricBoatType> key = RegistryKey.of(FabricBoatType.REGISTRY_KEY, id);
 				Registry<FabricBoatType> registry = getWorld().getRegistryManager().get(FabricBoatType.REGISTRY_KEY);
-				RegistryEntry<FabricBoatType> type = registry.getEntry(key).orElse(null);
+				FabricBoatType type = registry.get(key);
 
 				if (type != null) {
-					this.fabricBoatType = type;
+					dataTracker.set(FABRIC_BOAT_TYPE, OptionalInt.of(registry.getRawId(type)));
 				} else {
-					LOGGER.warn("Unknown Fabric boat type");
+					LOGGER.warn("Unknown Fabric boat type {}", id);
 				}
 			} catch (InvalidIdentifierException e) {
 				LOGGER.error("Cannot load Fabric boat type from NBT: invalid id {}", nbt.getString("FabricType"), e);
 			}
 		}
+	}
+
+	@Inject(method = "initDataTracker", at = @At("RETURN"))
+	private void onInitDataTracker(CallbackInfo info) {
+		dataTracker.startTracking(FABRIC_BOAT_TYPE, OptionalInt.empty());
 	}
 
 	@ModifyArg(
@@ -86,8 +138,10 @@ abstract class BoatEntityMixin extends Entity implements FabricBoatEntity {
 			allow = 1
 	)
 	private ItemConvertible modifyPlanks(ItemConvertible original) {
-		if (fabricBoatType != null) {
-			ItemConvertible planks = fabricBoatType.value().planks();
+		RegistryEntry<FabricBoatType> boatType = getFabricBoatType();
+
+		if (boatType != null) {
+			ItemConvertible planks = boatType.value().planks();
 
 			if (planks != null) {
 				return planks;
@@ -99,8 +153,10 @@ abstract class BoatEntityMixin extends Entity implements FabricBoatEntity {
 
 	@Inject(method = "asItem", at = @At("HEAD"), cancellable = true)
 	private void replaceBoatItem(CallbackInfoReturnable<Item> info) {
-		if (fabricBoatType != null) {
-			ItemConvertible boat = fabricBoatType.value().boat();
+		RegistryEntry<FabricBoatType> boatType = getFabricBoatType();
+
+		if (boatType != null) {
+			ItemConvertible boat = boatType.value().boat();
 
 			if (boat != null) {
 				info.setReturnValue(boat.asItem());

@@ -1,0 +1,5 @@
+{
+  "planks": "minecraft:cobblestone",
+  "boat": "fabric-object-builder-api-v1-testmod:test_boat",
+  "chest_boat": "fabric-object-builder-api-v1-testmod:test_chest_boat"
+}
