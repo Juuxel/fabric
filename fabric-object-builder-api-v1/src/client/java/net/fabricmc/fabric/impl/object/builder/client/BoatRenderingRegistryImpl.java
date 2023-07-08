@@ -40,7 +40,7 @@ public final class BoatRenderingRegistryImpl {
 		Key key = new Key(type, chest);
 
 		if (ALL_SETTINGS.putIfAbsent(key, new Settings(type, raft, chest)) != null) {
-			throw new IllegalArgumentException("Trying to register a boat " + type + " for rendering multiple times!");
+			throw new IllegalArgumentException("Trying to register boat " + type + " for rendering multiple times!");
 		}
 	}
 
