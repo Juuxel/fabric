@@ -30,7 +30,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 
 /**
- * A custom boat type representing boats made from a specific material.
+ * A custom boat type representing boats and rafts made from a specific material.
  * This record contains data needed for boat logic.
  *
  * <p>New boat types can be registered by placing them in {@code data/<mod id>/fabric/boat_type/<boat type id>.json}
@@ -51,6 +51,7 @@ import net.minecraft.util.Identifier;
  * @param planks    the planks item, can be null
  * @param boat      the boat item, can be null
  * @param chestBoat the chest boat item, can be null
+ * @see net.fabricmc.fabric.api.object.builder.v1.client.BoatRenderingRegistry registering rendering data for boats
  */
 public record FabricBoatType(
 		@Nullable ItemConvertible planks,
