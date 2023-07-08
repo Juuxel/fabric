@@ -29,6 +29,7 @@
   "entrypoints": {
     "main": [
       "net.fabricmc.fabric.test.object.builder.BlockEntityTypeBuilderTest",
+      "net.fabricmc.fabric.test.object.builder.BoatTest",
       "net.fabricmc.fabric.test.object.builder.CriterionRegistryTest::init",
       "net.fabricmc.fabric.test.object.builder.FabricBlockSettingsTest",
       "net.fabricmc.fabric.test.object.builder.VillagerTypeTest1",
@@ -36,6 +37,7 @@
       "net.fabricmc.fabric.test.object.builder.TealSignTest"
     ],
     "client": [
+      "net.fabricmc.fabric.test.object.builder.client.BoatClientTest",
       "net.fabricmc.fabric.test.object.builder.client.TealSignClientTest"
     ],
     "fabric-gametest": [

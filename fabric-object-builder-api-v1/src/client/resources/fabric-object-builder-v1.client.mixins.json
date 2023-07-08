@@ -3,6 +3,7 @@
   "package": "net.fabricmc.fabric.mixin.object.builder.client",
   "compatibilityLevel": "JAVA_16",
   "client": [
+    "BoatEntityRendererMixin",
     "EntityModelLayersMixin",
     "HangingSignEditScreenMixin",
     "ModelPredicateProviderRegistryAccessor",
