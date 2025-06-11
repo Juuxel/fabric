@@ -50,6 +50,7 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.CommandOutput;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -210,7 +211,8 @@ public class LootTest implements ModInitializer {
 			stashedServer.setValue(new WeakReference<>(server));
 			CommandManager manager = server.getCommandManager();
 			CommandDispatcher<ServerCommandSource> dispatcher = manager.getDispatcher();
-			ParseResults<ServerCommandSource> parseResults = dispatcher.parse(command, server.getCommandSource());
+			ServerCommandSource commandSource = server.getCommandSource().withOutput(CommandOutput.DUMMY);
+			ParseResults<ServerCommandSource> parseResults = dispatcher.parse(command, commandSource);
 
 			if (parseResults.getReader().canRead()) {
 				throw new IllegalStateException("Failed to Parse Command: " + parseResults);
