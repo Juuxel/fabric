@@ -5,6 +5,9 @@ pluginManagement {
 			url = 'https://maven.fabricmc.net/'
 		}
 		gradlePluginPortal()
+		maven {
+			url = 'https://raw.githubusercontent.com/Juuxel/loom-dev-builds/refs/heads/master/'
+		}
 	}
 }
 

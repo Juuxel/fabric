@@ -88,9 +88,7 @@ public interface FabricLootTableBuilder {
 	 * @param modifier the modifying function
 	 * @return this builder
 	 */
-	default LootTable.Builder modifyPools(Consumer<? super LootPool.Builder> modifier) {
-		throw new UnsupportedOperationException("Implemented via mixin");
-	}
+	LootTable.Builder modifyPools(Consumer<? super LootPool.Builder> modifier);
 
 	/**
 	 * Creates a builder copy of a loot table.

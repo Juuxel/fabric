@@ -41,9 +41,7 @@ public interface FabricLootPoolBuilder {
 	 * @param entry the added loot entry
 	 * @return this builder
 	 */
-	default LootPool.Builder add(LootPoolEntryContainer entry) {
-		throw new UnsupportedOperationException("Implemented via mixin");
-	}
+	LootPool.Builder add(LootPoolEntryContainer entry);
 
 	/**
 	 * Adds entries to this builder.
