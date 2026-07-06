@@ -5,16 +5,6 @@ plugins {
 
 repositories {
 	mavenCentral()
-	maven {
-		name = 'Fabric'
-		url = 'https://maven.fabricmc.net/'
-	}
-}
-
-dependencies {
-	implementation 'org.ow2.asm:asm:9.10.1'
-	implementation 'net.fabricmc:class-tweaker:0.3.0-beta.2'
-	implementation 'com.google.code.gson:gson:2.14.0'
 }
 
 checkstyle {
