@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -102,14 +100,10 @@ public abstract class CheckInjectedInterfaceDefaultMethodsTask extends DefaultTa
 					String relativeSourcePath = directory + violation.sourceFile;
 
 					for (File sourceRoot : getSourceRoots()) {
-						Path sourceFile = sourceRoot.toPath()
-								.resolve(relativeSourcePath)
-								.toAbsolutePath();
-						Path relativized = Path.of(getRootDir().get()).relativize(sourceFile);
+						File sourceFile = new File(sourceRoot, relativeSourcePath);
 
-						if (Files.exists(sourceFile)) {
-							System.out.printf("::error file=%s,line=1::ABS Injected interface has abstract method %s%n", escapeGitHubActionsProperty(sourceFile.toString()), violation.method);
-							System.out.printf("::error file=%s,line=1::REL Injected interface has abstract method %s%n", escapeGitHubActionsProperty(relativized.toString()), violation.method);
+						if (sourceFile.exists()) {
+							System.out.printf("::error file=%s,line=1::Injected interface has abstract method %s%n", escapeGitHubActionsProperty(sourceFile.getAbsolutePath()), violation.method);
 							break;
 						}
 					}
