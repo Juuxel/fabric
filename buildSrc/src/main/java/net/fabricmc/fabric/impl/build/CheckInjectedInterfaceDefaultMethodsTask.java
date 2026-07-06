@@ -108,9 +108,8 @@ public abstract class CheckInjectedInterfaceDefaultMethodsTask extends DefaultTa
 						Path relativized = Path.of(getRootDir().get()).relativize(sourceFile);
 
 						if (Files.exists(sourceFile)) {
-							System.out.printf("Debug... error file=%s::Injected interface has abstract method %s%n", escapeGitHubActionsProperty(relativized.toString()), violation.method);
-							System.out.printf("::error file=%s,line=1::A Injected interface has abstract method %s%n", escapeGitHubActionsProperty(relativized.toString()), violation.method);
-							System.out.printf("::error file=%s::B Injected interface has abstract method %s%n", escapeGitHubActionsProperty(relativized.toString()), violation.method);
+							System.out.printf("::error file=%s,line=1::ABS Injected interface has abstract method %s%n", escapeGitHubActionsProperty(sourceFile.toString()), violation.method);
+							System.out.printf("::error file=%s,line=1::REL Injected interface has abstract method %s%n", escapeGitHubActionsProperty(relativized.toString()), violation.method);
 							break;
 						}
 					}
