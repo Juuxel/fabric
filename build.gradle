@@ -319,6 +319,14 @@ allprojects {
 	}
 	check.dependsOn "validateMixinNames"
 
+	tasks.register('validateInjectedInterfaces', net.fabricmc.fabric.impl.build.CheckInjectedInterfaceDefaultMethodsTask) {
+		modJar = tasks.named('jar').flatMap { it.archiveFile }
+		sourceRoots.from(sourceSets.main.java.srcDirs)
+		sourceRoots.from(sourceSets.client.java.srcDirs)
+		outputs.upToDateWhen { true } // Task has no outputs
+	}
+	check.dependsOn 'validateInjectedInterfaces'
+
 	// Apply to each valid subproject.
 	apply from: rootProject.file('gradle/package-info.gradle')
 	apply from: rootProject.file('gradle/validate-annotations.gradle')
