@@ -2,7 +2,7 @@ plugins {
 	id "java-library"
 	id "eclipse"
 	id "maven-publish"
-	id "net.fabricmc.fabric-loom" version "1.17-ii-validation-1" apply false
+	id "net.fabricmc.fabric-loom" version "1.17-ii-validation-2" apply false
 	id "com.diffplug.spotless" version "8.5.1"
 	id "me.modmuss50.remotesign" version "0.5.0" apply false
 	id "me.modmuss50.mod-publish-plugin" version "2.0.1"
@@ -323,7 +323,7 @@ allprojects {
 		modJar = tasks.named('jar').flatMap { it.archiveFile }
 		sourceRoots.from(sourceSets.main.java.srcDirs)
 		sourceRoots.from(sourceSets.client.java.srcDirs)
-		problemReportingOptions.get().displayGithubActionsAnnotations = true
+		problemReportingOptions.displayGithubActionsAnnotations = true
 		outputs.upToDateWhen { true } // Task has no outputs
 	}
 	check.dependsOn 'validateInjectedInterfaces'
