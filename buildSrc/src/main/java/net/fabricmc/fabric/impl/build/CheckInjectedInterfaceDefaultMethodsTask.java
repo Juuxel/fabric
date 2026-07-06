@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -63,10 +65,14 @@ public abstract class CheckInjectedInterfaceDefaultMethodsTask extends DefaultTa
 	public abstract ConfigurableFileCollection getSourceRoots();
 
 	@Input
+	public abstract Property<String> getRootDir();
+
+	@Input
 	public abstract Property<Boolean> getDisplayGitHubAnnotations();
 
 	public CheckInjectedInterfaceDefaultMethodsTask() {
 		getDisplayGitHubAnnotations().convention(true);
+		getRootDir().convention(getProject().getRootDir().getAbsolutePath());
 	}
 
 	@TaskAction
@@ -96,10 +102,15 @@ public abstract class CheckInjectedInterfaceDefaultMethodsTask extends DefaultTa
 					String relativeSourcePath = directory + violation.sourceFile;
 
 					for (File sourceRoot : getSourceRoots()) {
-						File sourceFile = new File(sourceRoot, relativeSourcePath);
+						Path sourceFile = sourceRoot.toPath()
+								.resolve(relativeSourcePath)
+								.toAbsolutePath();
+						Path relativized = Path.of(getRootDir().get()).relativize(sourceFile);
 
-						if (sourceFile.exists()) {
-							System.out.printf("::error file=%s::Injected interface has abstract method %s%n", escapeGitHubActionsProperty(sourceFile.getAbsolutePath()), violation.method);
+						if (Files.exists(sourceFile)) {
+							System.out.printf("Debug... error file=%s::Injected interface has abstract method %s%n", escapeGitHubActionsProperty(relativized.toString()), violation.method);
+							System.out.printf("::error file=%s,line=1::A Injected interface has abstract method %s%n", escapeGitHubActionsProperty(relativized.toString()), violation.method);
+							System.out.printf("::error file=%s::B Injected interface has abstract method %s%n", escapeGitHubActionsProperty(relativized.toString()), violation.method);
 							break;
 						}
 					}
