@@ -43,12 +43,14 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.work.DisableCachingByDefault;
+import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import net.fabricmc.classtweaker.api.ClassTweakerReader;
+import net.fabricmc.classtweaker.api.visitor.AccessWidenerVisitor;
 import net.fabricmc.classtweaker.api.visitor.ClassTweakerVisitor;
 
 @DisableCachingByDefault
@@ -151,6 +153,12 @@ public abstract class CheckInjectedInterfaceDefaultMethodsTask extends DefaultTa
 				}
 
 				injectedInterfaces.add(iface);
+			}
+
+			@Override
+			public AccessWidenerVisitor visitAccessWidener(String owner) {
+				return new AccessWidenerVisitor() {
+				};
 			}
 		};
 
